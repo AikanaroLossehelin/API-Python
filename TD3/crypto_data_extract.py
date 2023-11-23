@@ -17,9 +17,8 @@ from multiprocessing import shared_memory, Lock
 #
 ###############################################################################
 
-
+# Récupère les données OHLCV pour une paire de cryptomonnaies
 def get_info(pair, interval, limit=1000):
-    """ Récupère les données OHLCV pour une paire de cryptomonnaies. """
     url = f"https://api.binance.com/api/v3/klines"
     params = {
         'symbol': pair,
