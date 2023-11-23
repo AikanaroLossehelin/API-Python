@@ -12,8 +12,8 @@ import json
 import time
 from multiprocessing import shared_memory, Lock
 
+# Lit et désérialise les données de la mémoire partagée
 def read_shared_memory(shm, lock):
-    # Lit et désérialise les données de la mémoire partagée
     with lock:
         data = shm.buf.tobytes().split(b'\0', 1)[0]
         return json.loads(data) if data else {}
@@ -45,7 +45,7 @@ def run(shm, lock):
                     except json.JSONDecodeError:
                         response = "Invalid JSON format"
                         conn.sendall(response.encode('utf-8'))
-                        print("Objet JSON reçu de format incorrect.")
+                        print("Format du JSON incorrect.")
                         continue
 
                     market_data = read_shared_memory(shm, lock)
@@ -55,7 +55,7 @@ def run(shm, lock):
                         response = f"No data available for {pair}"
 
                     conn.sendall(response.encode('utf-8'))
-                    time.sleep(1)  # Donner un peu de temps avant de fermer la connexion
+                    time.sleep(1)  # Laisse un peu de temps avant de fermer la connexion
 
             except Exception as e:
                 print(f"Error occurred: {e}")
